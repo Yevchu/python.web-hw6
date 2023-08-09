@@ -1,17 +1,9 @@
 -- Знайти середній бал у групах з певного предмета.
 
--- TODO: маємо проблему: "Traceback (most recent call last):
---   File "D:\python\python.web-hw\python.web-hw6\query\get_query.py", line 20, in <module>      
---     r = get_q(file)
---   File "D:\python\python.web-hw\python.web-hw6\query\get_query.py", line 14, in get_q
---     cur.execute(sql_query)
--- sqlite3.OperationalError: no such column: g.group_id"
-
-SELECT s.group_id, AVG(average_grade) as avg_grade
-FROM (
-    SELECT g.group_id, g.student_id, AVG(g.grade) as average_grade
-    FROM grades g
-    INNER JOIN subjects sub ON g.subject_id = sub.subject_id
-    WHERE sub.subject_name = 'Physics'
-    GROUP BY g.group_id, g.student_id
-)
+SELECT g.group_name, AVG(gr.grade), sub.subject_name 
+FROM students s 
+INNER JOIN groups g ON s.group_id = g.group_id 
+INNER JOIN grades gr ON s.student_id = gr.student_id 
+INNER JOIN subjects sub ON gr.subject_id = sub.subject_id 
+WHERE sub.subject_name = 'Physics'
+GROUP BY g.group_name 
